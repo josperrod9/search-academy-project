@@ -12,6 +12,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.io.IOException;
+
 @RestController
 @RequestMapping("/search")
 public class QueriesController {
@@ -33,7 +35,11 @@ public class QueriesController {
     })
     @GetMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<QueryResponse> search(@RequestParam(name = "query", required = false, defaultValue="unknown") String query) {
-        return ResponseEntity.ok(searchService.search(query));
+        try {
+            return ResponseEntity.ok(searchService.search(query));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 }
