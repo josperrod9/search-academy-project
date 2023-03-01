@@ -5,11 +5,11 @@ import co.empathy.academy.searchAPI.repositories.ElasticLowClient;
 import org.apache.tomcat.util.json.JSONParser;
 import org.apache.tomcat.util.json.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 
-@Service
+@Component
 public class SearchServiceImpl implements SearchService {
     @Autowired
     private final ElasticLowClient elasticLowClient;

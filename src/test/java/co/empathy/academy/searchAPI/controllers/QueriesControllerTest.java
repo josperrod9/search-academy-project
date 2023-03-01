@@ -2,6 +2,8 @@ package co.empathy.academy.searchAPI.controllers;
 
 import co.empathy.academy.searchAPI.models.QueryResponse;
 import co.empathy.academy.searchAPI.services.SearchService;
+
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
