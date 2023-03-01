@@ -1,9 +1,6 @@
 package co.empathy.academy.searchAPI.repositories;
 
-import org.apache.http.util.EntityUtils;
-import org.elasticsearch.client.Request;
-import org.elasticsearch.client.Response;
-import org.elasticsearch.client.RestClient;
+import co.empathy.academy.searchAPI.configuration.ElasticSearchConfig;
 import org.springframework.stereotype.Repository;
 
 import java.io.IOException;
@@ -11,25 +8,19 @@ import java.io.IOException;
 @Repository
 public class ElasticLowClientImpl implements ElasticLowClient {
 
-    private final RestClient lowClient;
+    private final ElasticSearchConfig searchConfig;
 
-    public ElasticLowClientImpl(RestClient lowClient) {
-        this.lowClient = lowClient;
+    public ElasticLowClientImpl(ElasticSearchConfig searchConfig) {
+        this.searchConfig = searchConfig;
     }
 
     /**
-     * Makes a petition to elastic search, similar to making a request to http://localhost:9200
+     * Makes a petition to elastic search that calls to HealthResponse class which contains cluster name
      *
      * @return elasticsearch information
      */
     @Override
-    public String getElasticInfo() {
-        Request request = new Request("GET", "/");
-        try {
-            Response response = lowClient.performRequest(request);
-            return EntityUtils.toString(response.getEntity());
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+    public String getClusterName() throws IOException {
+        return searchConfig.getElasticSearchClient().cluster().health().clusterName();
     }
 }

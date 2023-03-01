@@ -7,6 +7,8 @@ import org.apache.tomcat.util.json.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
+
 @Service
 public class SearchServiceImpl implements SearchService {
     @Autowired
@@ -24,15 +26,8 @@ public class SearchServiceImpl implements SearchService {
      * @return QueryResponse
      */
     @Override
-    public QueryResponse search(String query) {
-        String elasticInfo = elasticLowClient.getElasticInfo();
-        //Parse the json above to obtain the cluster name
-        String clusterName;
-        try {
-            clusterName = new JSONParser(elasticInfo).parseObject().get("cluster_name").toString();
-        } catch (ParseException e) {
-            throw new RuntimeException(e);
-        }
+    public QueryResponse search(String query) throws IOException {
+        String clusterName = elasticLowClient.getClusterName();
         return new QueryResponse(query, clusterName);
     }
 }

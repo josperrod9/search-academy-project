@@ -7,6 +7,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.ResponseEntity;
 
+import java.io.IOException;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
@@ -20,7 +22,7 @@ public class QueriesControllerTest {
 
 
     @Test
-    void givenQuery_whenSearch_thenQueryResponse() {
+    void givenQuery_whenSearch_thenQueryResponse() throws IOException {
         String query = "Query";
         QueryResponse response = new QueryResponse(query, "clusterName");
 
