@@ -4,11 +4,11 @@ import org.apache.http.util.EntityUtils;
 import org.elasticsearch.client.Request;
 import org.elasticsearch.client.Response;
 import org.elasticsearch.client.RestClient;
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 
-@Repository
+@Component
 public class ElasticLowClientImpl implements ElasticLowClient {
 
     private final RestClient lowClient;

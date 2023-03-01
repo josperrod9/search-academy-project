@@ -34,12 +34,8 @@ public class QueriesController {
             @ApiResponse(responseCode = "200", description = "Successful operation"),
     })
     @GetMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<QueryResponse> search(@RequestParam(name = "query", required = false, defaultValue="unknown") String query) {
-        try {
+    public ResponseEntity<QueryResponse> search(@RequestParam(name = "query", required = false, defaultValue="unknown") String query) throws IOException {
             return ResponseEntity.ok(searchService.search(query));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
     }
 
 }
