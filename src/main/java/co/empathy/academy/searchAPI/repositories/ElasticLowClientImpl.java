@@ -1,11 +1,11 @@
 package co.empathy.academy.searchAPI.repositories;
 
 import co.empathy.academy.searchAPI.configuration.ElasticSearchConfig;
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 
-@Repository
+@Component
 public class ElasticLowClientImpl implements ElasticLowClient {
 
     private final ElasticSearchConfig searchConfig;
@@ -17,7 +17,7 @@ public class ElasticLowClientImpl implements ElasticLowClient {
     /**
      * Makes a petition to elastic search that calls to HealthResponse class which contains cluster name
      *
-     * @return elasticsearch information
+     * @return elasticsearch cluster name
      */
     @Override
     public String getClusterName() throws IOException {
