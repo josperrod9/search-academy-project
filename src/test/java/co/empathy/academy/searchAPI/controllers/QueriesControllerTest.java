@@ -17,16 +17,11 @@ import static org.mockito.Mockito.*;
 public class QueriesControllerTest {
     private final SearchService service = mock(SearchService.class);
     @Test
-    void givenQuery_whenSearch_thenQueryResponse() {
+    void givenQuery_whenSearch_thenQueryResponse() throws IOException {
         String query = "Query";
         QueryResponse response = new QueryResponse(query, "clusterName");
 
-        try {
-            given(service.search(query)).willReturn(response);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
+        given(service.search(query)).willReturn(response);
         QueriesController queriesController = new QueriesController(service);
 
         ResponseEntity<QueryResponse> result = queriesController.search(query);
