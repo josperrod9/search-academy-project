@@ -2,35 +2,33 @@ package co.empathy.academy.searchAPI.controllers;
 
 import co.empathy.academy.searchAPI.models.QueryResponse;
 import co.empathy.academy.searchAPI.services.SearchService;
-
-
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.ResponseEntity;
 
 import java.io.IOException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.*;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class QueriesControllerTest {
+    private final SearchService service = mock(SearchService.class);
+    private final int EXPECTED_SUCCESS_STATUS = 200;
+    private final int EXPECTED_ERROR_STATUS = 500;
+    private final String query = "query";
 
-    @Mock
-    private SearchService searchService;
-
-    @InjectMocks
-    private QueriesController queriesController;
 
     @Test
-    public void givenQuery_whenSearchInController_thenQueryResponse() throws IOException {
+    void givenQuery_whenSearch_thenQueryResponse() throws IOException {
         String query = "Query";
         QueryResponse response = new QueryResponse(query, "clusterName");
 
-        given(searchService.search(query)).willReturn(response);
+        given(service.search(query)).willReturn(response);
+
+        QueriesController queriesController = new QueriesController(service);
 
         ResponseEntity<QueryResponse> result = queriesController.search(query);
         System.out.printf(String.valueOf(response));
