@@ -1,5 +1,6 @@
 package co.empathy.academy.searchAPI.services;
 
+import co.empathy.academy.search.ClusterNameMethod;
 import co.empathy.academy.searchAPI.configuration.ElasticSearchConfig;
 import co.empathy.academy.searchAPI.models.QueryResponse;
 import org.springframework.stereotype.Component;
@@ -9,10 +10,10 @@ import java.io.IOException;
 @Component
 public class SearchServiceImpl implements SearchService {
 
-    private final ElasticSearchConfig elasticSearchConfig;
+    private final ClusterNameMethod clusterNameMethod;
 
-    public SearchServiceImpl(ElasticSearchConfig elasticSearConfig) {
-        this.elasticSearchConfig = elasticSearConfig;
+    public SearchServiceImpl(ClusterNameMethod clusterNameMethod) {
+        this.clusterNameMethod = clusterNameMethod;
     }
 
     /**
@@ -23,6 +24,6 @@ public class SearchServiceImpl implements SearchService {
      */
     @Override
     public QueryResponse search(String query) throws IOException {
-        return new QueryResponse(query, elasticSearchConfig.getClusterNameMethod().getClusterName());
+        return new QueryResponse(query, clusterNameMethod.getClusterName());
     }
 }
