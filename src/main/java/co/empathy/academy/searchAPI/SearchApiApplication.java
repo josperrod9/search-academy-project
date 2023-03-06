@@ -9,5 +9,4 @@ public class SearchApiApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(SearchApiApplication.class, args);
 	}
-
 }
