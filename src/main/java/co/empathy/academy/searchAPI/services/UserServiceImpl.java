@@ -11,11 +11,8 @@ import java.util.concurrent.ConcurrentHashMap;
 @Component
 public class UserServiceImpl implements UserService {
 
-    private final ConcurrentHashMap<Long, User> users;
+    private final ConcurrentHashMap<Long, User> users = new ConcurrentHashMap<>();
 
-    public UserServiceImpl(ConcurrentHashMap<Long, User> users) {
-        this.users = users;
-    }
 
     public Collection<User> findAllUsers() {
         return users.values();

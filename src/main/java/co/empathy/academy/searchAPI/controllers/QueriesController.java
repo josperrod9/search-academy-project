@@ -5,8 +5,6 @@ import co.empathy.academy.searchAPI.services.SearchService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,9 +28,7 @@ public class QueriesController {
      * @param query - query to search
      * @return QueryResponse with the query and the cluster names
      */
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Successful operation"),
-    })
+
     @GetMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<QueryResponse> search(@RequestParam(name = "query", required = false, defaultValue="unknown") String query) throws IOException {
         return ResponseEntity.ok(searchService.search(query));
