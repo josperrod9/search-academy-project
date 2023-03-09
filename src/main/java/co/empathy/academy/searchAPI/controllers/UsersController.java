@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 
 
 @RestController
@@ -109,7 +110,20 @@ public class UsersController {
             responses = { @ApiResponse(responseCode = "200", description = "Users saved", content = @Content(schema = @Schema(implementation = User.class))),
                     @ApiResponse(responseCode = "400", description = "Invalid users supplied", content = @Content),
                     @ApiResponse(responseCode = "409", description = "Some user already exists", content = @Content) })
-    public CompletableFuture<String> uploadUsersAsync(@RequestParam("file") MultipartFile file) throws IOException {
-            return userService.saveAllAsync(file);
+    public ResponseEntity<HttpStatus> uploadUsersAsync(@RequestParam("file") MultipartFile file) throws IOException {
+        CompletableFuture<String> task = userService.saveAllAsync(file);
+            return new ResponseEntity<>(HttpStatus.ACCEPTED);
+    }
+
+    @GetMapping("/upload-async/status")
+    public ResponseEntity<String> createUsersBulkStatus(@RequestParam(value = "taskId") String taskId) throws InterruptedException, ExecutionException {
+        CompletableFuture<String> task = userService.getTask(taskId);
+        if (task == null) {
+            return new ResponseEntity<>("The task with Id " + taskId + " didn't exist", HttpStatus.NOT_FOUND);
+        } else if (task.isDone()) {
+            return new ResponseEntity<>(task.get(), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("The task with Id " + taskId + " is in progress", HttpStatus.ACCEPTED);
+        }
     }
 }

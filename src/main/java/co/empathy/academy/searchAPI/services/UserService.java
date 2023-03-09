@@ -26,4 +26,7 @@ public interface UserService {
     void saveAll(MultipartFile file) throws IOException;
 
     CompletableFuture<String> saveAllAsync(MultipartFile file) throws IOException;
+
+    CompletableFuture<String> getTask(String taskId);
+
 }

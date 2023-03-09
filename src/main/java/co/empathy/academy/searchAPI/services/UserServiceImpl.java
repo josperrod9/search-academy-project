@@ -12,14 +12,15 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Component
 public class UserServiceImpl implements UserService {
 
-    private final ConcurrentHashMap<Long, User> users = new ConcurrentHashMap<>();
-
+    private final Map<Long, User> users = new ConcurrentHashMap<>();
+    private final Map<String, CompletableFuture<String>> taskMap = new ConcurrentHashMap<>();
 
     public Collection<User> findAllUsers() {
         return users.values();
@@ -61,9 +62,22 @@ public class UserServiceImpl implements UserService {
 
     @Async
     public CompletableFuture<String> saveAllAsync(MultipartFile file) throws IOException {
-        List<User> usersList = new ObjectMapper().readValue(file.getBytes(), new TypeReference<List<User>>() {});
-        usersList.forEach(user -> this.users.put(user.getId(), user));
-        return CompletableFuture.completedFuture("Usuarios creados con éxito");
+        CompletableFuture<String> task = CompletableFuture.supplyAsync(() -> {
+            try {
+                List<User> usersList = new ObjectMapper().readValue(file.getBytes(), new TypeReference<List<User>>() {});
+                usersList.forEach(user -> this.users.put(user.getId(), user));
+                return "Users saved";
+            } catch (IOException e) {
+                throw new RuntimeException("Error processing data", e);
+            }
+        });
+        taskMap.put("saveAllAsync", task);
+        return task;
+    }
+
+    @Override
+    public CompletableFuture<String> getTask(String taskId) {
+        return taskMap.get(taskId);
     }
 
     public void deleteUser(long id) throws UserNotFoundException {
