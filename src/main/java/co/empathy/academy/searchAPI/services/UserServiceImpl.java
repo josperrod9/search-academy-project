@@ -61,7 +61,7 @@ public class UserServiceImpl implements UserService {
 
 
     @Async
-    public CompletableFuture<String> saveAllAsync(MultipartFile file) throws IOException {
+    public void saveAllAsync(MultipartFile file) throws IOException {
         CompletableFuture<String> task = CompletableFuture.supplyAsync(() -> {
             try {
                 List<User> usersList = new ObjectMapper().readValue(file.getBytes(), new TypeReference<List<User>>() {});
@@ -72,7 +72,6 @@ public class UserServiceImpl implements UserService {
             }
         });
         taskMap.put("saveAllAsync", task);
-        return task;
     }
 
     @Override

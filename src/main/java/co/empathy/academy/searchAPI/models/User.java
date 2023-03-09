@@ -12,6 +12,7 @@ import lombok.Setter;
 @Setter
 public class User {
 
+    @NotBlank(message = "ID is mandatory")
     private long id;
 
     @NotBlank(message = "Name is mandatory")

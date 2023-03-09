@@ -15,7 +15,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -23,7 +22,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.Collection;
-import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
@@ -107,16 +105,15 @@ public class UsersController {
 
     @PostMapping("/upload-async")
     @Operation(operationId = "uploadUsers-async", summary = "Upload a list of new users", tags = { "users" },
-            responses = { @ApiResponse(responseCode = "200", description = "Users saved", content = @Content(schema = @Schema(implementation = User.class))),
-                    @ApiResponse(responseCode = "400", description = "Invalid users supplied", content = @Content),
-                    @ApiResponse(responseCode = "409", description = "Some user already exists", content = @Content) })
+            responses = { @ApiResponse(responseCode = "202", description = "Users are being processed", content = @Content(schema = @Schema(implementation = User.class))),
+                    @ApiResponse(responseCode = "400", description = "Invalid users supplied", content = @Content)})
     public ResponseEntity<HttpStatus> uploadUsersAsync(@RequestParam("file") MultipartFile file) throws IOException {
-        CompletableFuture<String> task = userService.saveAllAsync(file);
-            return new ResponseEntity<>(HttpStatus.ACCEPTED);
+        userService.saveAllAsync(file);
+        return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }
 
     @GetMapping("/upload-async/status")
-    public ResponseEntity<String> createUsersBulkStatus(@RequestParam(value = "taskId") String taskId) throws InterruptedException, ExecutionException {
+    public ResponseEntity<String> uploadUsersAsyncStatus(@RequestParam(value = "taskId") String taskId) throws InterruptedException, ExecutionException {
         CompletableFuture<String> task = userService.getTask(taskId);
         if (task == null) {
             return new ResponseEntity<>("The task with Id " + taskId + " didn't exist", HttpStatus.NOT_FOUND);
