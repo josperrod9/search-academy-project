@@ -4,8 +4,12 @@ import co.empathy.academy.searchAPI.exceptions.DuplicatedUserException;
 import co.empathy.academy.searchAPI.exceptions.UserNotFoundException;
 import co.empathy.academy.searchAPI.models.User;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.Collection;
+import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 @Service
 public interface UserService {
@@ -18,4 +22,8 @@ public interface UserService {
     void deleteUser(long id) throws UserNotFoundException;
 
     User updateUser(long id, User user) throws UserNotFoundException;
+
+    void saveAll(MultipartFile file) throws IOException;
+
+    CompletableFuture<String> saveAllAsync(MultipartFile file) throws IOException;
 }

@@ -29,7 +29,7 @@ public class QueriesController {
      * @return QueryResponse with the query and the cluster names
      */
 
-    @GetMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/info", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<QueryResponse> search(@RequestParam(name = "query", required = false, defaultValue="unknown") String query) throws IOException {
         return ResponseEntity.ok(searchService.search(query));
     }
