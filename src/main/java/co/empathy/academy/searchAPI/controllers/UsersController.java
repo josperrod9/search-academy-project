@@ -42,8 +42,8 @@ public class UsersController {
     @GetMapping
     @Operation(operationId = "findAllUsers", summary = "Find all users", tags = { "users" },
             responses = { @ApiResponse(responseCode = "200", description = "successful operation", content = @Content(schema = @Schema(implementation = User.class))) })
-    public Collection<User> findAllUsers() {
-        return userService.findAllUsers();
+    public ResponseEntity<Collection<User>> findAllUsers() {
+        return ResponseEntity.ok(userService.findAllUsers());
     }
 
     @GetMapping("/{id}")

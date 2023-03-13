@@ -22,7 +22,8 @@ public class User {
     private String email;
 
     // standard constructors / toString
-    public User(@NotNull String name, @NotNull String email) {
+    public User(long id, @NotNull String name, @NotNull String email) {
+        this.id = id;
         this.name = name;
         this.email = email;
     }

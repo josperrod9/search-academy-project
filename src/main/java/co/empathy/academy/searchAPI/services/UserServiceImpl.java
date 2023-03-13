@@ -44,6 +44,7 @@ public class UserServiceImpl implements UserService {
     }
 
     public User updateUser(long id,User user) throws UserNotFoundException {
+        user.setId(id);
         if (this.users.containsKey(id)) {
             this.users.replace(id, user);
             return user;
