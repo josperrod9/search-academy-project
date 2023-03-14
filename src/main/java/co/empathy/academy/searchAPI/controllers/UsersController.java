@@ -62,8 +62,8 @@ public class UsersController {
             responses = { @ApiResponse(responseCode = "201", description = "User created", content = @Content(schema = @Schema(implementation = User.class))),
                     @ApiResponse(responseCode = "400", description = "Invalid User supplied", content = @Content),
                     @ApiResponse(responseCode = "409", description = "User already exists", content = @Content) })
-    public User saveUser(@Validated @RequestBody User user) throws DuplicatedUserException {
-        return userService.saveUser(user);
+    public ResponseEntity<User> saveUser(@Validated @RequestBody User user) throws DuplicatedUserException {
+        return ResponseEntity.ok(userService.saveUser(user));
     }
 
     @DeleteMapping("/{id}")

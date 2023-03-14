@@ -10,12 +10,14 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.http.ResponseEntity;
 
+
 import java.util.Arrays;
 import java.util.Collection;
 
 import static org.junit.Assert.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
+
 
 @RunWith(MockitoJUnitRunner.class)
 public class UsersControllerTest {
@@ -37,15 +39,37 @@ public class UsersControllerTest {
     }
 
     @Test
-    public void givenUser_whenFindUserById_thenStatus200AndJson() throws Exception {
+    public void givenId_whenFindUserById_thenStatus200AndJson() throws Exception {
         User user = new User(1L, "John Doe", "john.doe@example.com");
         when(userService.findUserById(1L)).thenReturn(user);
         ResponseEntity<User> response = usersController.findUserById(1L);
         assertEquals(user, response.getBody());
     }
 
-    //@Test
-    //public void givenUser_whenFindUserById_thenStatus404() throws Exception {
-    //    assertThrows(UserNotFoundException.class, () -> usersController.findUserById(1));
-    //}
+    @Test
+    public void givenId_whenFindUserById_thenStatus404() throws Exception {
+        when(userService.findUserById(1L)).thenThrow(new UserNotFoundException(1L));
+        assertThrows(UserNotFoundException.class, () -> usersController.findUserById(1L));
+    }
+
+    @Test
+    public void givenUser_whenSaveUser_thenStatus201() throws Exception {
+        User user = new User(1L, "John Doe", "john.doe@example.com");
+        when(userService.saveUser(user)).thenReturn(user);
+        ResponseEntity<User> response = usersController.saveUser(user);
+        assertEquals(user, response.getBody());
+    }
+
+    @Test
+    public void givenUser_whenUpdateUser_thenStatus200() throws Exception {
+        User user = new User(1L, "John Doe", "john.doe@example.com");
+        when(userService.updateUser(1L, user)).thenReturn(user);
+        ResponseEntity<User> response = usersController.updateUser(1L, user);
+        assertEquals(user, response.getBody());
+    }
+
+    @Test
+    public void givenId_whenDeleteUser_thenStatus204() throws Exception {
+
+    }
 }
