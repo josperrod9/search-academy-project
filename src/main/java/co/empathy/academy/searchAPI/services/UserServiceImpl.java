@@ -6,6 +6,7 @@ import co.empathy.academy.searchAPI.models.User;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -17,6 +18,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Component
+@EnableAsync
 public class UserServiceImpl implements UserService {
 
     private final Map<Long, User> users = new ConcurrentHashMap<>();
@@ -67,8 +69,9 @@ public class UserServiceImpl implements UserService {
             try {
                 List<User> usersList = new ObjectMapper().readValue(file.getBytes(), new TypeReference<List<User>>() {});
                 usersList.forEach(user -> this.users.put(user.getId(), user));
+                Thread.sleep(5000);
                 return "Users saved";
-            } catch (IOException e) {
+            } catch (IOException | InterruptedException e) {
                 throw new RuntimeException("Error processing data", e);
             }
         });
