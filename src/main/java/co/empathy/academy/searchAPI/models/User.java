@@ -3,7 +3,6 @@ package co.empathy.academy.searchAPI.models;
 
 
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
@@ -23,7 +22,7 @@ public class User {
     private String email;
 
     // standard constructors / toString
-    public User(long id, @NotNull String name, @NotNull String email) {
+    public User(@NotNull long id, @NotNull String name, @NotNull String email) {
         this.id = id;
         this.name = name;
         this.email = email;

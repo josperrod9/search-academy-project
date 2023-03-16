@@ -15,8 +15,6 @@ import java.net.URISyntaxException;
 public class RestExceptionHandler {
 
     @ExceptionHandler(value = { UserNotFoundException.class })
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    @ResponseBody
     public ErrorResponse handleUserNotFoundException(UserNotFoundException ex) throws URISyntaxException {
         ErrorResponse errorResponse = ErrorResponse.create(ex, HttpStatus.NOT_FOUND,ex.getMessage());
         errorResponse.getBody().setType(new URI("https://httpstatuses.com/404"));
@@ -24,18 +22,17 @@ public class RestExceptionHandler {
     }
 
     @ExceptionHandler(value = { DuplicatedUserException.class })
-    @ResponseStatus(HttpStatus.CONFLICT)
-    @ResponseBody
-    public ErrorResponse handleDuplicatedUserException(DuplicatedUserException ex) {
-        return ErrorResponse.create(ex, HttpStatus.CONFLICT,ex.getMessage());
+    public ErrorResponse handleDuplicatedUserException(DuplicatedUserException ex) throws URISyntaxException {
+        ErrorResponse errorResponse = ErrorResponse.create(ex, HttpStatus.CONFLICT,ex.getMessage());
+        errorResponse.getBody().setType(new URI("https://httpstatuses.com/409"));
+        return errorResponse;
     }
 
     @ExceptionHandler(value = { MethodArgumentNotValidException.class, MethodArgumentTypeMismatchException.class })
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ResponseBody
-    public ErrorResponse handleMethodArgumentNotValidException(Exception ex) {
-        String message = ex.getMessage();
-        return ErrorResponse.create(ex, HttpStatus.BAD_REQUEST,message);
+    public ErrorResponse handleMethodArgumentNotValidException(Exception ex) throws URISyntaxException {
+        ErrorResponse errorResponse = ErrorResponse.create(ex, HttpStatus.BAD_REQUEST,ex.getMessage());
+        errorResponse.getBody().setType(new URI("https://httpstatuses.com/400"));
+        return errorResponse;
     }
 }
 
